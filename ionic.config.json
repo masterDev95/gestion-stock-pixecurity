@@ -1,0 +1,7 @@
+{
+  "name": "gestion-stock-pixecurity",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
