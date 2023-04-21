@@ -11,6 +11,11 @@ export const routes: Routes = [
         loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
       },
       {
+        path: 'search',
+        loadComponent: () =>
+          import('./search/search.page').then((m) => m.SearchPage),
+      },
+      {
         path: '',
         redirectTo: '/tabs/home',
         pathMatch: 'full',
@@ -21,9 +26,5 @@ export const routes: Routes = [
     path: '',
     redirectTo: '/tabs/home',
     pathMatch: 'full',
-  },
-  {
-    path: 'form',
-    loadComponent: () => import('./search/form/form.page').then( m => m.FormPage)
   },
 ];
