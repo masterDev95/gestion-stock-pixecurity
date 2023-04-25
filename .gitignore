@@ -34,6 +34,9 @@ log.txt
 npm-debug.log
 yarn-error.log
 
+# Test
+/src/app/test
+
 # IDEs and editors
 .idea/
 .project

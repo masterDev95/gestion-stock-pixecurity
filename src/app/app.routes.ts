@@ -27,4 +27,8 @@ export const routes: Routes = [
     redirectTo: '/tabs/home',
     pathMatch: 'full',
   },
+  {
+    path: 'axonaut',
+    loadComponent: () => import('./test/axonaut/axonaut.page').then( m => m.AxonautPage)
+  },
 ];
