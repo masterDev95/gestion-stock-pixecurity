@@ -4,9 +4,42 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Rechercher</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="view = 'form'">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <search-form></search-form>
+  <!-- RESULTATS -->
+  <search-results
+    *ngIf="view === 'results'"
+    [results]="transmissionData"
+  ></search-results>
+  <!-- FORMULAIRE -->
+  <search-form
+    *ngIf="view === 'form'"
+    (results)="receiveResults($event)"
+  ></search-form>
+
+  <ion-fab
+    *ngIf="view === 'results'"
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+  >
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="view = 'form'"
+        ><ion-icon name="search"></ion-icon
+      ></ion-fab-button>
+      <ion-fab-button (click)="scrollToTop()"
+        ><ion-icon name="chevron-up"></ion-icon
+      ></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>

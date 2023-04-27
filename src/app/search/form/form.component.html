@@ -1,29 +1,34 @@
-<form>
-  <ion-grid fixed>
-    <!-- Choix catégorie -->
-    <ion-row>
-      <ion-col>
-        <ion-item>
-          <ion-select placeholder="Choisir une catégorie" interface="popover">
-          </ion-select>
-        </ion-item>
-      </ion-col>
-    </ion-row>
+<ion-grid fixed>
+  <!-- SEGMENTS par code/par nom -->
+  <ion-segment value="code" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="code">
+      <ion-label>Par code</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="name">
+      <ion-label>Par nom</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 
-    <!-- BOUTONS -->
-    <ion-row>
-      <ion-col>
-        <ion-button expand="full">
-          Rechercher
-        </ion-button>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-button expand="full">
-          Effacer
-        </ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</form>
+  <!-- Champ de recherche -->
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label position="floating">{{
+          currentSegment === "code" ? "Code produit" : "Nom du produit"
+        }}</ion-label>
+        <ion-input
+          type="text"
+          [formControl]="searchField"
+          (keyup.enter)="search()"
+        ></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+
+  <!-- BOUTONS -->
+  <ion-row>
+    <ion-col>
+      <ion-button expand="full" (click)="search()" [disabled]="!searchField.valid"> Rechercher </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-grid>

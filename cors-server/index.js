@@ -36,7 +36,7 @@ app.options("*", cors(corsOptions));
 // Récupération d'un produit par son code
 app.get("/products/product-code/:code", cors(corsOptions), async (req, res, next) => {
   try {
-    console.log("request");
+    console.log("GET product by code:", req.params.code);
     const response = await axios.get(
       `https://axonaut.com/api/v2/products?product_code=${req.params.code}`,
       { headers }
@@ -50,9 +50,9 @@ app.get("/products/product-code/:code", cors(corsOptions), async (req, res, next
 // Récupération d'un produit par son nom
 app.get("/products/name/:name", cors(corsOptions), async (req, res, next) => {
   try {
-    console.log("request");
+    console.log("GET product by name:", req.params.name);
     const response = await axios.get(
-      `https://axonaut.com/api/v2/products?product_code=${req.params.name}`,
+      `https://axonaut.com/api/v2/products?name=${req.params.name}`,
       { headers }
     );
     res.json(response.data);
@@ -60,6 +60,31 @@ app.get("/products/name/:name", cors(corsOptions), async (req, res, next) => {
     next(error);
   }
 });
+
+// Mise à jour du stock
+app.patch("/update/:pID/stock/:n", cors(corsOptions), async (req, res, next) => {
+  try {
+    console.log(`UPDATE stock "${req.params.pID}" x${req.params.n}`);
+
+    const body = {
+      stock: parseInt(req.params.n),
+      update_reason: "inventory",
+    };
+
+    console.log(body)
+
+    const response = await axios.patch(
+      `https://axonaut.com/api/v2/products/${req.params.pID}/stock`,
+      body,
+      { headers }
+    );
+
+    res.json(response.data);
+  } catch (error) {
+    next(error);
+  }
+});
+
 
 // Lancement du serveur
 app.listen(3000, () => {
