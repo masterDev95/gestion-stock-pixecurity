@@ -1,0 +1,132 @@
+<form [formGroup]="productForm">
+  <ion-grid fixed class="ion-padding">
+    <!-- PRODUIT/SERVICE -->
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Nom</ion-label>
+          <ion-input type="text" formControlName="name"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-select
+            formControlName="type"
+            placeholder="Type"
+            interface="popover"
+          >
+            <ion-select-option [value]="601"
+              >Achat de matières premières</ion-select-option
+            >
+            <ion-select-option [value]="701"
+              >Vente de produits finis</ion-select-option
+            >
+            <ion-select-option [value]="706"
+              >Vente de services</ion-select-option
+            >
+            <ion-select-option [value]="707"
+              >Vente de marchandises</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Code produit</ion-label>
+          <ion-input type="text" formControlName="productCode"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <!-- MARQUE ET FOURNISSEUR -->
+    <ng-container formGroupName="customFields">
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Marque</ion-label>
+            <ion-input type="text" formControlName="marque"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Fournisseur</ion-label>
+            <ion-input type="text" formControlName="fournisseur"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Description</ion-label>
+          <ion-textarea formControlName="description"></ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <!-- STOCK -->
+    <ion-row>
+      <ion-col>
+        <h2>Stock</h2>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Quantité</ion-label>
+          <ion-input type="number" id="qty" formControlName="qty" [min]="0"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <!-- PRIX -->
+    <ng-container formGroupName="priceFields">
+      <ion-row>
+        <ion-col>
+          <h2>Prix</h2>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Prix</ion-label>
+            <ion-input type="number" formControlName="price"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-select
+              formControlName="taxRate"
+              placeholder="Taux de taxe"
+              interface="popover"
+            >
+              <ion-select-option [value]="0"
+                >Pas de taux (0%)</ion-select-option
+              >
+              <ion-select-option [value]="5.5"
+                >Taux réduit (5,5%)</ion-select-option
+              >
+              <ion-select-option [value]="10"
+                >Taux intermédiaire (10%)</ion-select-option
+              >
+              <ion-select-option [value]="20"
+                >Taux normal (20%)</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+  </ion-grid>
+</form>

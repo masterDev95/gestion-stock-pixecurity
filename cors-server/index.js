@@ -89,12 +89,14 @@ app.patch("/update/:pID/", cors(corsOptions), async (req, res, next) => {
       `https://axonaut.com/api/v2/products/${req.params.pID}`,
       {
         name,
-        type,
+        product_type: type,
         product_code: productCode,
-        custom_fields: customFields,
+        custom_fields: {
+          Marque: customFields.marque,
+          Fournisseur: customFields.fournisseur,
+        },
         description,
         price: priceFields.price,
-        price_with_tax: priceFields.priceWithTax,
         tax_rate: priceFields.taxRate,
         stock: qty,
       },
@@ -134,6 +136,37 @@ app.patch(
     }
   }
 );
+
+// Création d'un produit
+app.post("/create", cors(corsOptions), async (req, res, next) => {
+  try {
+    console.log("CREATE product");
+
+    // Extraire les données du corps de la requête POST
+    const { name, type, productCode, description, priceFields, qty } = req.body;
+
+    const body = {
+      name,
+      product_type: type,
+      product_code: productCode,
+      description,
+      price: priceFields.price,
+      tax_rate: priceFields.taxRate,
+      stock: qty,
+    };
+
+    // Envoyer une requête POST à l'API Axonaut pour créer le produit
+    const response = await axios.post(
+      `https://axonaut.com/api/v2/products`,
+      body,
+      { headers }
+    );
+
+    res.json(response.data);
+  } catch (error) {
+    next(error);
+  }
+});
 
 // Lancement du serveur
 app.listen(3000, () => {

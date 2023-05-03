@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -43,5 +43,15 @@ export class AxonautService {
       productOptions,
       this.httpOptions
     );
+  }
+
+  createProduct(productOptions: any) {
+    const subject = new Subject<Observable<Object>>();
+    this.http
+      .post('http://localhost:3000/create', productOptions, this.httpOptions)
+      .subscribe((res: any) =>
+        subject.next(this.updateProduct(res.id, productOptions))
+      );
+    return subject.asObservable();
   }
 }

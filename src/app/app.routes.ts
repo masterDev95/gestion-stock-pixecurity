@@ -27,6 +27,20 @@ export const routes: Routes = [
           },
         ],
       },
+      {
+        path: 'new',
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./ajout-produit/ajout-produit.page').then( m => m.AjoutProduitPage)
+          },
+          {
+            path: 'detail-produit',
+            loadComponent: () =>
+              import('./detail-produit/detail-produit.page').then(
+                (m) => m.DetailProduitPage
+              ),
+          },
         ]
       },
       {
