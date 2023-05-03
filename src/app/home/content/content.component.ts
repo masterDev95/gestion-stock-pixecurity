@@ -5,7 +5,7 @@ import { ArticleRecentComponent } from './article-recent/article-recent.componen
 import { NavigationComponent } from './navigation/navigation.component';
 
 @Component({
-  selector: 'app-content',
+  selector: 'home-content',
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.scss'],
   standalone: true,

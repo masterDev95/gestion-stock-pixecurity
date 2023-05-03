@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'home-navigation',
@@ -10,8 +10,15 @@ import { IonicModule } from '@ionic/angular';
 })
 export class NavigationComponent  implements OnInit {
 
-  constructor() { }
+  constructor(private navController: NavController) { }
 
   ngOnInit() {}
 
+  goToSearch() {
+    this.navController.navigateForward(['tabs', 'search']);
+  }
+
+  goToAddProduct() {
+    this.navController.navigateForward(['tabs', 'new']);
+  }
 }

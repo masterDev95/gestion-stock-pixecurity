@@ -1,7 +1,7 @@
 <ion-grid fixed>
   <ion-row>
     <ion-col size="6">
-      <ion-card button>
+      <ion-card button (click)="goToSearch()">
         <ion-card-header>
           <ion-card-title>
             <ion-icon name="search"></ion-icon>
@@ -23,9 +23,9 @@
     </ion-col>
   </ion-row>
 
-  <ion-row>
+  <ion-row class="ion-margin-top">
     <ion-col>
-      <ion-card button>
+      <ion-card button (click)="goToAddProduct()">
         <ion-card-header>
           <ion-card-title>
             <ion-icon name="add"></ion-icon>
