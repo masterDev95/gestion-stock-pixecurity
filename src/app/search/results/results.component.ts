@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, Input } from '@angular/core';
+import { NavigationExtras } from '@angular/router';
 import {
-  AlertController,
   IonicModule,
   LoadingController,
   ModalController,
+  NavController,
   ToastController,
 } from '@ionic/angular';
 import { AxonautService } from 'src/app/services/axonaut.service';
@@ -27,7 +28,7 @@ import { NumberPickerComponent } from 'src/app/utils/number-picker/number-picker
         <ion-col>
           <ion-list>
             <ng-container *ngFor="let p of results; index as i">
-              <ion-item *ngIf="p.custom_fields.Fournisseur" button>
+              <ion-item *ngIf="p.custom_fields.Fournisseur">
                 <ion-label>
                   <p>{{ p.custom_fields.Fournisseur }}</p>
                   <h2>{{ p.name }}</h2>
@@ -35,6 +36,9 @@ import { NumberPickerComponent } from 'src/app/utils/number-picker/number-picker
                 </ion-label>
 
                 <ion-buttons slot="end">
+                  <ion-button fill="solid" (click)="goToDetail(p)">
+                    Détails
+                  </ion-button>
                   <ion-button fill="solid" (click)="presentModalQty(p, i)">
                     Stock
                   </ion-button>
@@ -52,14 +56,50 @@ export class ResultsComponent implements OnInit {
   @Input() results!: any;
 
   constructor(
-    private alertController: AlertController,
     private loadingController: LoadingController,
     private toastController: ToastController,
     private modalController: ModalController,
+    private navController: NavController,
     private axonautService: AxonautService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.itemChangeDetection();
+  }
+
+  /**
+   * Fonction pour détecter les changements de produits envoyés depuis le service AxonautService.
+   * Cette fonction met à jour le produit correspondant dans le tableau `results` si le produit existe déjà.
+   */
+  itemChangeDetection() {
+    this.axonautService.productToUpdate.subscribe((newProduct) => {
+      const { productCode, customFields, priceFields, qty } = newProduct;
+
+      // Transformation des propriétés du produit en conformité avec la structure attendue par l'API
+      newProduct = {
+        ...newProduct,
+        product_code: productCode,
+        custom_fields: {
+          Marque: customFields.marque,
+          Fournisseur: customFields.fournisseur,
+        },
+        price: priceFields.price,
+        price_with_tax: priceFields.priceWithTax,
+        tax_rate: priceFields.taxRate,
+        stock: qty,
+      };
+
+      // Recherche l'index du produit dans le tableau `results`
+      const index = this.results.findIndex(
+        (item: any) => item.id === newProduct.id
+      );
+
+      // Si le produit existe déjà, on met à jour ses propriétés dans le tableau `results`
+      if (index !== -1) {
+        this.results[index] = newProduct;
+      }
+    });
+  }
 
   /**
    * Fonction pour afficher un message éphémère.
@@ -124,5 +164,23 @@ export class ResultsComponent implements OnInit {
         },
       });
     }
+  }
+
+  /**
+   * Redirige vers la page de détails du produit sélectionné.
+   * @param product Le produit sélectionné.
+   */
+  goToDetail(product: any) {
+    // Prépare les paramètres de la navigation avec les détails du produit sélectionné
+    const navExtras: NavigationExtras = {
+      queryParams: {
+        product: JSON.stringify(product),
+      },
+    };
+    // Navigue vers la page de détails du produit en utilisant la NavController
+    this.navController.navigateForward(
+      ['tabs', 'search', 'detail-produit'],
+      navExtras
+    );
   }
 }

@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ selectedProduct.product_code }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToSearch()">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <detail-produit-form [selectedProduct]="selectedProduct"></detail-produit-form>
+</ion-content>

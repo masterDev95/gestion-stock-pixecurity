@@ -12,8 +12,22 @@ export const routes: Routes = [
       },
       {
         path: 'search',
-        loadComponent: () =>
-          import('./search/search.page').then((m) => m.SearchPage),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./search/search.page').then((m) => m.SearchPage),
+          },
+          {
+            path: 'detail-produit',
+            loadComponent: () =>
+              import('./detail-produit/detail-produit.page').then(
+                (m) => m.DetailProduitPage
+              ),
+          },
+        ],
+      },
+        ]
       },
       {
         path: '',
@@ -29,6 +43,7 @@ export const routes: Routes = [
   },
   {
     path: 'axonaut',
-    loadComponent: () => import('./test/axonaut/axonaut.page').then( m => m.AxonautPage)
+    loadComponent: () =>
+      import('./test/axonaut/axonaut.page').then((m) => m.AxonautPage),
   },
 ];
