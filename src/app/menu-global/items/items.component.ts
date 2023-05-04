@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-items',
@@ -10,10 +10,12 @@ import { IonicModule } from '@ionic/angular';
   template: `
     <ion-list>
       <ng-container *ngFor="let item of itemsList">
-        <ion-item button lines="none">
-          <ion-icon slot="start" [name]="item.iconName"></ion-icon>
-          <ion-label>{{ item.label }}</ion-label>
-        </ion-item>
+        <ion-menu-toggle>
+          <ion-item button (click)="navigate(item.link)" lines="none">
+            <ion-icon slot="start" [name]="item.iconName"></ion-icon>
+            <ion-label>{{ item.label }}</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
       </ng-container>
     </ion-list>
   `,
@@ -26,9 +28,10 @@ export class ItemsComponent implements OnInit {
   itemsList: {
     label: string;
     iconName: string;
+    link: string[];
   }[] = [];
 
-  constructor() {}
+  constructor(private navController: NavController) {}
 
   ngOnInit() {
     // Initialisation de la liste d'éléments avec des données
@@ -36,19 +39,27 @@ export class ItemsComponent implements OnInit {
       {
         iconName: 'home',
         label: 'Accueil',
+        link: ['tabs', 'home'],
       },
       {
         iconName: 'apps',
         label: 'Catégories',
+        link: ['tabs', 'home'],
       },
       {
         iconName: 'search',
         label: 'Rechercher',
+        link: ['tabs', 'search'],
       },
       {
         iconName: 'add',
         label: 'Ajouter un nouvel article',
+        link: ['tabs', 'new'],
       },
     ];
+  }
+
+  navigate(link: string[]) {
+    this.navController.navigateForward(link);
   }
 }

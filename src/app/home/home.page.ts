@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, NavController } from '@ionic/angular';
 import { ContentComponent } from './content/content.component';
 
 @Component({
@@ -10,5 +10,9 @@ import { ContentComponent } from './content/content.component';
   imports: [IonicModule, ContentComponent],
 })
 export class HomePage {
-  constructor() {}
+  constructor(private navController: NavController) {}
+
+  goToSearch() {
+    this.navController.navigateForward(['tabs', 'search']);
+  }
 }
