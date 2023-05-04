@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  HostListener,
+} from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import {
@@ -27,6 +33,8 @@ export class FormComponent implements OnInit {
   currentSegment: 'code' | 'name' = 'code';
   /** Champ de recherche contrôlé par Reactive Forms. */
   searchField = new FormControl('', Validators.required);
+  /** Booléen qui indique si l'icône de recherche est visible en fonction de la taille de l'écran. */
+  isSearchIconVisible!: boolean;
 
   constructor(
     private axonautService: AxonautService,
@@ -34,7 +42,17 @@ export class FormComponent implements OnInit {
     private alertController: AlertController
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.checkScreenSize();
+  }
+
+  /**
+   * Vérifie la taille de l'écran pour afficher l'icône de recherche ou le texte "Rechercher" selon la taille de l'écran.
+   */
+  @HostListener('window:resize')
+  checkScreenSize() {
+    this.isSearchIconVisible = window.innerWidth > 576;
+  }
 
   /**
    * Gère l'événement de changement de segment.
@@ -97,8 +115,7 @@ export class FormComponent implements OnInit {
   async notFoundAlert() {
     const alert = await this.alertController.create({
       header: 'Produit non trouvé',
-      message:
-        'Veuillez être plus précis dans les termes de votre recherche.',
+      message: 'Veuillez être plus précis dans les termes de votre recherche.',
       buttons: ['OK'],
     });
     alert.present();

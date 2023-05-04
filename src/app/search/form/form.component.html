@@ -1,6 +1,10 @@
 <ion-grid fixed>
   <!-- SEGMENTS par code/par nom -->
-  <ion-segment value="code" (ionChange)="segmentChanged($event)">
+  <ion-segment
+    value="code"
+    (ionChange)="segmentChanged($event)"
+    class="ion-padding"
+  >
     <ion-segment-button value="code">
       <ion-label>Par code</ion-label>
     </ion-segment-button>
@@ -9,8 +13,8 @@
     </ion-segment-button>
   </ion-segment>
 
-  <!-- Champ de recherche -->
-  <ion-row>
+  <ion-row class="ion-align-items-center ion-padding">
+    <!-- Champ de recherche -->
     <ion-col>
       <ion-item>
         <ion-label position="floating">{{
@@ -23,12 +27,28 @@
         ></ion-input>
       </ion-item>
     </ion-col>
-  </ion-row>
 
-  <!-- BOUTONS -->
-  <ion-row>
-    <ion-col>
-      <ion-button expand="full" (click)="search()" [disabled]="!searchField.valid"> Rechercher </ion-button>
+    <!-- Bouton rechercher -->
+    <ion-col size="12" sizeSm="2" sizeLg="1">
+      <ng-container *ngIf="isSearchIconVisible">
+        <ion-button
+          (click)="search()"
+          [disabled]="!searchField.valid"
+          expand="block"
+          size="large"
+        >
+          <ion-icon slot="icon-only" name="search"></ion-icon>
+        </ion-button>
+      </ng-container>
+      <ng-container *ngIf="!isSearchIconVisible">
+        <ion-button
+          (click)="search()"
+          [disabled]="!searchField.valid"
+          expand="block"
+        >
+          Rechercher
+        </ion-button>
+      </ng-container>
     </ion-col>
   </ion-row>
 </ion-grid>

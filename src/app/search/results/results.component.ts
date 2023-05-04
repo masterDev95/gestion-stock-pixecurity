@@ -123,6 +123,7 @@ export class ResultsComponent implements OnInit {
       component: NumberPickerComponent,
       componentProps: { number: product.stock, maxNbOfDigits: 3 },
       initialBreakpoint: 0.33,
+      breakpoints: [0, .33, .5, .75],
     });
     modal.present();
 
