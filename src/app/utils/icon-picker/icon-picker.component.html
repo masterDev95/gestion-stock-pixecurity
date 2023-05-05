@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button color="medium" (click)="cancel()">Annuler</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-input
+            type="text"
+            placeholder="Rechercher une icône"
+            (ionInput)="search($event)"
+          ></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-text-center">
+      <ion-col>
+        <ion-button fill="clear" size="large" *ngFor="let i of searchList" (click)="save(i)">
+          <ion-icon slot="icon-only" [name]="i"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
