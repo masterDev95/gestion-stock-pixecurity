@@ -2,7 +2,9 @@
   <ion-grid fixed class="ion-padding">
     <ion-row class="ion-align-items-center">
       <ion-col size="6"
-        ><h1 class="product-code-title">{{ selectedProduct.product_code }}</h1></ion-col
+        ><h1 class="product-code-title">
+          {{ selectedProduct.product_code }}
+        </h1></ion-col
       >
       <ion-col size="6">
         <ion-button [disabled]="productForm.invalid" (click)="onSubmit()">
@@ -74,6 +76,25 @@
       </ion-row>
     </ng-container>
 
+    <!-- CATÉGORIE -->
+    <ion-row *ngIf="Object.keys(collectionCategories).length > 0">
+      <ion-col>
+        <ion-item>
+          <ion-select
+            formControlName="categorie"
+            label="Catégorie du produit"
+            labelPlacement="floating"
+          >
+            <ion-select-option
+              *ngFor="let c of collectionCategories | keyvalue"
+              [value]="c.key"
+              >{{ c.value.name }}</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
     <ion-row>
       <ion-col>
         <ion-item>
@@ -94,7 +115,12 @@
       <ion-col>
         <ion-item>
           <ion-label position="floating">Quantité</ion-label>
-          <ion-input type="number" id="qty" formControlName="qty" [min]="0"></ion-input>
+          <ion-input
+            type="number"
+            id="qty"
+            formControlName="qty"
+            [min]="0"
+          ></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>

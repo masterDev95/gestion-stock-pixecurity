@@ -1,4 +1,11 @@
-import { Component, OnChanges, SimpleChanges, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  Component,
+  OnChanges,
+  SimpleChanges,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   IonicModule,
@@ -6,16 +13,18 @@ import {
   NavController,
   ToastController,
 } from '@ionic/angular';
+import { Categorie } from 'src/app/models/categorie';
 import { AxonautService } from 'src/app/services/axonaut.service';
+import { CategorieService } from 'src/app/services/categorie.service';
 
 @Component({
   selector: 'detail-produit-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
   standalone: true,
-  imports: [IonicModule, ReactiveFormsModule],
+  imports: [IonicModule, CommonModule, ReactiveFormsModule],
 })
-export class FormComponent implements OnChanges {
+export class FormComponent implements OnInit, OnChanges {
   @Input() selectedProduct!: any;
 
   /**
@@ -33,6 +42,7 @@ export class FormComponent implements OnChanges {
       marque: [''],
       fournisseur: [''],
     }),
+    categorie: [''],
     description: [''],
     priceFields: this.fb.group({
       price: [0, [Validators.required, Validators.min(0)]],
@@ -45,9 +55,13 @@ export class FormComponent implements OnChanges {
     qty: [0, [Validators.required, Validators.min(0)]],
   });
 
+  collectionCategories: { [key: string]: Categorie } = {};
+  Object = Object;
+
   constructor(
     private fb: FormBuilder,
     private axonautService: AxonautService,
+    private categorieService: CategorieService,
     private loadingController: LoadingController,
     private toastController: ToastController,
     private navController: NavController
@@ -69,6 +83,12 @@ export class FormComponent implements OnChanges {
       default:
         return 707;
     }
+  }
+
+  ngOnInit() {
+    this.categorieService
+      .getCollection()
+      .then((categories) => (this.collectionCategories = categories));
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -94,6 +114,13 @@ export class FormComponent implements OnChanges {
         },
         qty: this.selectedProduct.stock,
       });
+
+      this.categorieService
+        .getCategorieByProductId(this.selectedProduct.id)
+        .then((categorie) => {
+          if (!categorie) return;
+          this.productForm.controls.categorie.setValue(categorie);
+        });
     }
   }
 
@@ -124,6 +151,19 @@ export class FormComponent implements OnChanges {
     loading.present();
 
     console.log(product);
+
+    const chosenCategorie = this.productForm.controls.categorie.value as string;
+
+    if (chosenCategorie !== '') {
+      const categorie = this.collectionCategories[chosenCategorie];
+      console.log(chosenCategorie, categorie);
+      const found = categorie.listeIdProduits.find(
+        (id) => id === this.selectedProduct.id
+      );
+      if (!found) categorie.listeIdProduits.push(this.selectedProduct.id);
+      this.categorieService.updateCategorie(chosenCategorie, categorie);
+    }
+
     this.axonautService
       .updateProduct(this.selectedProduct.id, product)
       .subscribe({

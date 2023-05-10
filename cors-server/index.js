@@ -36,6 +36,24 @@ const headers = {
 // Activation des requêtes preflight pour toutes les routes
 app.options("*", cors(corsOptions));
 
+// Récupération d'un produit par son id
+app.get(
+  "/products/:id",
+  cors(corsOptions),
+  async (req, res, next) => {
+    try {
+      console.log("GET product by id:", req.params.id);
+      const response = await axios.get(
+        `https://axonaut.com/api/v2/products/${req.params.id}`,
+        { headers }
+      );
+      res.json(response.data);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 // Récupération d'un produit par son code
 app.get(
   "/products/product-code/:code",

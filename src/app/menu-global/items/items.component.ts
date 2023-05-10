@@ -23,7 +23,7 @@ import { IonicModule, NavController } from '@ionic/angular';
 export class ItemsComponent implements OnInit {
   /**
    * Liste des éléments à afficher dans le composant ItemsComponent.
-   * @remarks Cette liste doit contenir des objets avec les propriétés suivantes : label et iconName.
+   * @remarks Cette liste doit contenir des objets avec les propriétés suivantes : label, iconName et link.
    */
   itemsList: {
     label: string;

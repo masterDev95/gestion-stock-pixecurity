@@ -1,0 +1,24 @@
+<ion-grid fixed>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label position="floating">Nom de la catégorie</ion-label>
+        <ion-input type="text" [formControl]="nameInput"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Icône</ion-label>
+        <ion-button
+          *ngIf="selectedIcon"
+          (click)="presentModal()"
+          fill="clear"
+          size="large"
+        >
+          <ion-icon slot="icon-only" [name]="selectedIcon"></ion-icon>
+        </ion-button>
+        <ion-button *ngIf="!selectedIcon" (click)="presentModal()">
+          Choisir
+        </ion-button>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+</ion-grid>

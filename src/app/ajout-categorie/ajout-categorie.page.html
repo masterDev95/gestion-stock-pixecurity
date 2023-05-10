@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Nouvelle catégorie</ion-title>
+    <ion-buttons *ngIf="form" slot="end">
+      <ion-button (click)="onValid()" [disabled]="!form.nameInput.valid">
+        <ion-icon slot="icon-only" name="save"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ajout-categorie-form></ajout-categorie-form>
+
+  <ion-fab *ngIf="form" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="onValid()" [disabled]="!form.nameInput.valid">
+      <ion-icon name="save"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

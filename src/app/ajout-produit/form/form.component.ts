@@ -66,6 +66,8 @@ export class FormComponent implements OnInit {
    * Elle récupère les valeurs du formulaire, affiche un loader en attendant la mise à jour, puis effectue la mise à jour du produit via le service Axonaut.
    */
   async onValid() {
+    if (!this.productForm.valid) return;
+
     // récupérer les valeurs du formulaire
     const product: any = this.productForm.value;
     console.log(product);
