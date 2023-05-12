@@ -3,6 +3,7 @@ import { IonicModule } from '@ionic/angular';
 import { MenuGlobalComponent } from './menu-global/menu-global.component';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from "firebase/firestore";
+import { getFunctions } from 'firebase/functions';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAczG-JufjksYif7C1FVLd25QvtAg09krs",
@@ -15,6 +16,7 @@ const firebaseConfig = {
 };
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+export const functions = getFunctions(app);
 
 @Component({
   selector: 'app-root',

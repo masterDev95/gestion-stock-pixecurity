@@ -97,6 +97,8 @@ export class FormComponent implements OnInit, OnChanges {
       // Récupère le type de produit correspondant au produit sélectionné
       const type = this.getTypeFromProductType(this.selectedProduct.type);
 
+      console.log(this.selectedProduct);
+
       // Met à jour les valeurs du formulaire avec les informations du produit sélectionné
       this.productForm.patchValue({
         name: this.selectedProduct.name,
@@ -156,7 +158,6 @@ export class FormComponent implements OnInit, OnChanges {
 
     if (chosenCategorie !== '') {
       const categorie = this.collectionCategories[chosenCategorie];
-      console.log(chosenCategorie, categorie);
       const found = categorie.listeIdProduits.find(
         (id) => id === this.selectedProduct.id
       );
@@ -166,24 +167,20 @@ export class FormComponent implements OnInit, OnChanges {
 
     this.axonautService
       .updateProduct(this.selectedProduct.id, product)
-      .subscribe({
-        // Si une erreur se produit
-        error: (err) => {
-          loading.dismiss();
-          console.error(err);
-          this.presentToastUpdate(
-            'Une erreur est survenue lors de la mise à jour du produit.'
-          );
-        },
-        // Si la mise à jour est effectuée avec succès
-        complete: () => {
-          loading.dismiss();
-          console.log('Mis à jour !');
-          this.presentToastUpdate('Produit mis à jour!');
-          product.id = this.selectedProduct.id;
-          this.axonautService.productToUpdate.next(product);
-          this.navController.back();
-        },
+      .then(() => {
+        loading.dismiss();
+        console.log('Mis à jour !');
+        this.presentToastUpdate('Produit mis à jour!');
+        product.id = this.selectedProduct.id;
+        this.axonautService.productToUpdate.next(product);
+        this.navController.back();
+      })
+      .catch((err) => {
+        loading.dismiss();
+        console.error(err);
+        this.presentToastUpdate(
+          'Une erreur est survenue lors de la mise à jour du produit.'
+        );
       });
   }
 }

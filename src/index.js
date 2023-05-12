@@ -1,11 +1,11 @@
-const express = require("express");
-const cors = require("cors");
-const axios = require("axios");
+import express from "express";
+import cors from "cors";
+import {get, patch, post} from "axios";
 const app = express();
-const config = require("./config");
-const bodyParser = require("body-parser");
+import {axonautApiKey} from "./config";
+import {json} from "body-parser";
 
-app.use(bodyParser.json());
+app.use(json());
 
 // Liste des origines autorisées à effectuer des requêtes
 const allowedOrigins = [
@@ -29,7 +29,7 @@ const corsOptions = {
 
 // Les headers à envoyer avec chaque requête vers l'API Axonaut
 const headers = {
-  userApiKey: config.axonautApiKey,
+  userApiKey: axonautApiKey,
   accept: "application/json",
 };
 
@@ -43,9 +43,9 @@ app.get(
   async (req, res, next) => {
     try {
       console.log("GET product by id:", req.params.id);
-      const response = await axios.get(
+      const response = await get(
         `https://axonaut.com/api/v2/products/${req.params.id}`,
-        { headers }
+        {headers}
       );
       res.json(response.data);
     } catch (error) {
@@ -61,9 +61,9 @@ app.get(
   async (req, res, next) => {
     try {
       console.log("GET product by code:", req.params.code);
-      const response = await axios.get(
+      const response = await get(
         `https://axonaut.com/api/v2/products?product_code=${req.params.code}`,
-        { headers }
+        {headers}
       );
       res.json(response.data);
     } catch (error) {
@@ -76,9 +76,9 @@ app.get(
 app.get("/products/name/:name", cors(corsOptions), async (req, res, next) => {
   try {
     console.log("GET product by name:", req.params.name);
-    const response = await axios.get(
+    const response = await get(
       `https://axonaut.com/api/v2/products?name=${req.params.name}`,
-      { headers }
+      {headers}
     );
     res.json(response.data);
   } catch (error) {
@@ -103,7 +103,7 @@ app.patch("/update/:pID/", cors(corsOptions), async (req, res, next) => {
     } = req.body;
 
     // Envoyer une requête PATCH à l'API Axonaut pour mettre à jour le produit
-    const response = await axios.patch(
+    const response = await patch(
       `https://axonaut.com/api/v2/products/${req.params.pID}`,
       {
         name,
@@ -118,7 +118,7 @@ app.patch("/update/:pID/", cors(corsOptions), async (req, res, next) => {
         tax_rate: priceFields.taxRate,
         stock: qty,
       },
-      { headers }
+      {headers}
     );
 
     res.json(response.data);
@@ -142,10 +142,10 @@ app.patch(
 
       console.log(body);
 
-      const response = await axios.patch(
+      const response = await patch(
         `https://axonaut.com/api/v2/products/${req.params.pID}/stock`,
         body,
-        { headers }
+        {headers}
       );
 
       res.json(response.data);
@@ -161,7 +161,7 @@ app.post("/create", cors(corsOptions), async (req, res, next) => {
     console.log("CREATE product");
 
     // Extraire les données du corps de la requête POST
-    const { name, type, productCode, description, priceFields, qty } = req.body;
+    const {name, type, productCode, description, priceFields, qty} = req.body;
 
     const body = {
       name,
@@ -174,10 +174,10 @@ app.post("/create", cors(corsOptions), async (req, res, next) => {
     };
 
     // Envoyer une requête POST à l'API Axonaut pour créer le produit
-    const response = await axios.post(
-      `https://axonaut.com/api/v2/products`,
+    const response = await post(
+      "https://axonaut.com/api/v2/products",
       body,
-      { headers }
+      {headers}
     );
 
     res.json(response.data);

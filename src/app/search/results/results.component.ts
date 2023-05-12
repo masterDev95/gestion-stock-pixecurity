@@ -123,7 +123,7 @@ export class ResultsComponent implements OnInit {
       component: NumberPickerComponent,
       componentProps: { number: product.stock, maxNbOfDigits: 3 },
       initialBreakpoint: 0.33,
-      breakpoints: [0, .33, .5, .75],
+      breakpoints: [0, 0.33, 0.5, 0.75],
     });
     modal.present();
 
@@ -142,17 +142,9 @@ export class ResultsComponent implements OnInit {
       loading.present();
 
       // Appel au service pour mettre à jour le stock
-      this.axonautService.updateStock(product.id, data).subscribe({
-        // Si une erreur se produit
-        error: (err) => {
-          loading.dismiss();
-          console.error(err);
-          this.presentToastUpdate(
-            'Une erreur est survenue lors de la mise à jour du stock.'
-          );
-        },
-        // Si la mise à jour est effectuée avec succès
-        complete: () => {
+      this.axonautService
+        .updateStock(product.id, data)
+        .then(() => {
           // Calcul de la différence de stock et affichage d'un message
           const diff = data - this.results[index].stock;
           const sign = Math.sign(diff) === 1 ? '+' : '-';
@@ -162,8 +154,14 @@ export class ResultsComponent implements OnInit {
           this.presentToastUpdate(
             `Stock mis à jour de ${sign}${Math.abs(diff)} unité(s)`
           );
-        },
-      });
+        })
+        .catch((err) => {
+          loading.dismiss();
+          console.error(err);
+          this.presentToastUpdate(
+            'Une erreur est survenue lors de la mise à jour du stock.'
+          );
+        });
     }
   }
 

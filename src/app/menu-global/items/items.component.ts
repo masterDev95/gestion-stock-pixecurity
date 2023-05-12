@@ -44,7 +44,7 @@ export class ItemsComponent implements OnInit {
       {
         iconName: 'apps',
         label: 'Catégories',
-        link: ['tabs', 'home'],
+        link: ['tabs', 'categories'],
       },
       {
         iconName: 'search',

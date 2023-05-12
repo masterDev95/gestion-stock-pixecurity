@@ -1,7 +1,7 @@
 <ion-grid fixed>
   <ion-row>
     <ion-col size="6">
-      <ion-card button (click)="goToSearch()">
+      <ion-card button [routerLink]="['/', 'tabs', 'search']">
         <ion-card-header>
           <ion-card-title>
             <ion-icon name="search"></ion-icon>
@@ -12,7 +12,7 @@
     </ion-col>
 
     <ion-col size="6">
-      <ion-card button>
+      <ion-card button [routerLink]="['/', 'tabs', 'categories']">
         <ion-card-header>
           <ion-card-title>
             <ion-icon name="apps"></ion-icon>
@@ -25,7 +25,7 @@
 
   <ion-row class="ion-margin-top">
     <ion-col>
-      <ion-card button (click)="goToAddProduct()">
+      <ion-card button [routerLink]="['/', 'tabs', 'new']">
         <ion-card-header>
           <ion-card-title>
             <ion-icon name="add"></ion-icon>

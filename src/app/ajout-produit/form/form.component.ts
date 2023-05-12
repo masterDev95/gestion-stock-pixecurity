@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
@@ -6,14 +7,16 @@ import {
   NavController,
   ToastController,
 } from '@ionic/angular';
+import { Categorie } from 'src/app/models/categorie';
 import { AxonautService } from 'src/app/services/axonaut.service';
+import { CategorieService } from 'src/app/services/categorie.service';
 
 @Component({
   selector: 'ajout-produit-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
   standalone: true,
-  imports: [IonicModule, ReactiveFormsModule],
+  imports: [IonicModule, CommonModule, ReactiveFormsModule],
 })
 export class FormComponent implements OnInit {
   /**
@@ -29,6 +32,7 @@ export class FormComponent implements OnInit {
       fournisseur: [''],
     }),
     description: [''],
+    categorie: [''],
     priceFields: this.fb.group({
       price: [0, [Validators.required, Validators.min(0)]],
       taxRate: [
@@ -39,15 +43,23 @@ export class FormComponent implements OnInit {
     qty: [0, [Validators.required, Validators.min(0)]],
   });
 
+  collectionCategories: { [key: string]: Categorie } = {};
+  Object = Object;
+
   constructor(
     private fb: FormBuilder,
     private axonautService: AxonautService,
+    private categorieService: CategorieService,
     private loadingController: LoadingController,
     private toastController: ToastController,
     private navController: NavController
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.categorieService
+      .getCollection()
+      .then((categories) => (this.collectionCategories = categories));
+  }
 
   /**
    * Fonction pour afficher un message éphémère.
@@ -80,28 +92,39 @@ export class FormComponent implements OnInit {
 
     console.log(product);
     this.axonautService.createProduct(product).subscribe((value) => {
-      value.subscribe({
-        next: (res) =>
+      value
+        .then((res) => {
+          const chosenCategorie = this.productForm.controls.categorie
+            .value as string;
+
+          if (chosenCategorie !== '') {
+            // Mettre à jour la catégorie si une catégorie est choisie
+            const categorie = this.collectionCategories[chosenCategorie];
+            const found = categorie.listeIdProduits.find(
+              (id) => id === (res.data as any).id
+            );
+            if (!found) categorie.listeIdProduits.push((res.data as any).id);
+            this.categorieService.updateCategorie(chosenCategorie, categorie);
+          }
+
+          // Naviguer vers la page de détail du produit créé
           this.navController.navigateBack(['tabs', 'new', 'detail-produit'], {
             queryParams: {
-              product: JSON.stringify(res),
+              product: JSON.stringify(res.data),
             },
-          }),
-        // Si une erreur se produit
-        error: (err) => {
+          });
+
+          loading.dismiss();
+          console.log('Création avec succès !');
+          this.presentToastUpdate('Produit crée!');
+        })
+        .catch((err) => {
           loading.dismiss();
           console.error(err);
           this.presentToastUpdate(
             'Une erreur est survenue lors de la création du produit.'
           );
-        },
-        // Si la mise à jour est effectuée avec succès
-        complete: () => {
-          loading.dismiss();
-          console.log('Création avec succès !');
-          this.presentToastUpdate('Produit crée!');
-        },
-      });
+        });
     });
   }
 }

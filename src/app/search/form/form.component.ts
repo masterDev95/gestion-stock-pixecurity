@@ -76,26 +76,21 @@ export class FormComponent implements OnInit {
     loading.present();
 
     // Sélectionne l'observable approprié en fonction du segment actuel.
-    const obs =
+    const promise =
       this.currentSegment === 'code'
         ? this.axonautService.getProductsByCode(searchTerm)
         : this.axonautService.getProductsByName(searchTerm);
 
-    obs.subscribe({
-      next: (res) => {
-        // Émet les résultats via l'événement `results`.
-        this.results.emit(res);
-        console.log(res);
-      },
-      error: (e) => {
-        console.error(e);
-        loading.dismiss();
-        this.notFoundAlert();
-      },
-      complete: () => {
-        console.info('Trouvé(s) !');
-        loading.dismiss();
-      },
+    promise.then((res) => {
+      // Émet les résultats via l'événement `results`.
+      this.results.emit(res.data as {});
+      console.log(res.data);
+      console.info('Trouvé!');
+      loading.dismiss();
+    }).catch((e) => {
+      console.error(e);
+      loading.dismiss();
+      this.notFoundAlert();
     });
   }
 

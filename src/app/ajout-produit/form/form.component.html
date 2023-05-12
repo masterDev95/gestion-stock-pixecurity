@@ -62,6 +62,25 @@
       </ion-row>
     </ng-container>
 
+    <!-- CATÉGORIE -->
+    <ion-row *ngIf="Object.keys(collectionCategories).length > 0">
+      <ion-col>
+        <ion-item>
+          <ion-select
+            formControlName="categorie"
+            label="Catégorie du produit"
+            labelPlacement="floating"
+          >
+            <ion-select-option
+              *ngFor="let c of collectionCategories | keyvalue"
+              [value]="c.key"
+              >{{ c.value.name }}</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
     <ion-row>
       <ion-col>
         <ion-item>
