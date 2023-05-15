@@ -4,12 +4,13 @@
 /** Ionic CSS Variables **/
 :root {
   /** primary **/
-  --ion-color-primary: #3880ff;
-  --ion-color-primary-rgb: 56, 128, 255;
-  --ion-color-primary-contrast: #ffffff;
-  --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #3171e0;
-  --ion-color-primary-tint: #4c8dff;
+  --ion-color-primary: #107cb3;
+	--ion-color-primary-rgb: 16,124,179;
+	--ion-color-primary-contrast: #ffffff;
+	--ion-color-primary-contrast-rgb: 255,255,255;
+	--ion-color-primary-shade: #0e6d9e;
+	--ion-color-primary-tint: #2889bb;
+  --ion-color-primary-gradient: linear-gradient(145deg, #002f4f 0%, #11374b 10%, #107cb3 100%);
 
   /** secondary **/
   --ion-color-secondary: #3dc2ff;
@@ -83,12 +84,12 @@
    */
 
   body {
-    --ion-color-primary: #428cff;
-    --ion-color-primary-rgb: 66,140,255;
+    --ion-color-primary: #107cb3;
+    --ion-color-primary-rgb: 16, 124, 179;
     --ion-color-primary-contrast: #ffffff;
-    --ion-color-primary-contrast-rgb: 255,255,255;
-    --ion-color-primary-shade: #3a7be0;
-    --ion-color-primary-tint: #5598ff;
+    --ion-color-primary-contrast-rgb: 255, 255, 255;
+    --ion-color-primary-shade: #0e6d9e;
+    --ion-color-primary-tint: #2889bb;
 
     --ion-color-secondary: #50c8ff;
     --ion-color-secondary-rgb: 80,200,255;
@@ -232,5 +233,49 @@
     --ion-tab-bar-background: #1f1f1f;
 
     --ion-card-background: #1e1e1e;
+  }
+}
+
+/** Theming **/
+@media (min-width: 576px) {
+  :not(ion-menu) {
+    > ion-content {
+      --background: url(../assets/bg/px-bg-2.png) center center/cover no-repeat;
+      --color: white;
+
+      ion-segment-button {
+        --color: white;
+      }
+    }
+  }
+  ion-toolbar {
+    --background: var(--ion-color-primary-gradient);
+    --color: var(--ion-color-primary-contrast);
+  }
+
+  ion-card {
+    --background: var(--ion-color-primary);
+    --color: var(--ion-color-primary-contrast);
+  }
+
+  ion-card-title {
+    --color: white;
+  }
+}
+
+@media (max-width: 576px) {
+  :not(ion-menu) {
+    > ion-content {
+      --background: url(../assets/bg/bg-pattern.jpg) center center/cover no-repeat !important;
+
+      ion-grid {
+        background-color: #00000050;
+        height: 100%;
+
+        ion-grid {
+          background: none;
+        }
+      }
+    }
   }
 }

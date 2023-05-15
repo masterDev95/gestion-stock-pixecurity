@@ -1,46 +1,44 @@
-export class Product {
+interface ProductInterface {
   id: number;
   name: string;
   productCode: string;
-  supplierProductCode: string;
   description: string;
-  price: string;
-  priceWithTax: string;
+  price: number;
+  priceWithTax: number;
   taxRate: number;
   type: string;
-  category: string;
-  jobCosting: string;
-  location: string;
-  unit: string;
-  disabled: boolean;
-  internalId: string;
   stock: number;
-  weightedAverageCost: string;
   customFields: {
     marque: string;
     fournisseur: string;
   };
-  image: string;
+}
 
-  constructor(data: any) {
+export class Product {
+  id: number;
+  name: string;
+  productCode: string;
+  description: string;
+  price: number;
+  priceWithTax: number;
+  taxRate: number;
+  type: string;
+  stock: number;
+  customFields: {
+    marque: string;
+    fournisseur: string;
+  };
+
+  constructor(data: ProductInterface) {
     this.id = data.id;
     this.name = data.name;
-    this.productCode = data.product_code;
-    this.supplierProductCode = data.supplier_product_code;
+    this.productCode = data.productCode;
     this.description = data.description;
     this.price = data.price;
-    this.priceWithTax = data.price_with_tax;
-    this.taxRate = data.tax_rate;
+    this.priceWithTax = data.priceWithTax;
+    this.taxRate = data.taxRate;
     this.type = data.type;
-    this.category = data.category;
-    this.jobCosting = data.job_costing;
-    this.location = data.location;
-    this.unit = data.unit;
-    this.disabled = data.disabled;
-    this.internalId = data.internal_id;
     this.stock = data.stock;
-    this.weightedAverageCost = data.weighted_average_cost;
-    this.customFields = data.custom_fields;
-    this.image = data.image;
+    this.customFields = data.customFields;
   }
 }
