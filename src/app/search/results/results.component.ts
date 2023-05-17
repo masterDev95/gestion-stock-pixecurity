@@ -13,43 +13,10 @@ import { NumberPickerComponent } from 'src/app/utils/number-picker/number-picker
 
 @Component({
   selector: 'search-results',
+  templateUrl: './results.component.html',
   styleUrls: ['./results.component.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule],
-  template: `
-    <ion-grid fixed>
-      <ion-row class="ion-padding-horizontal">
-        <ion-col>
-          <h1>Résultat de la recherche</h1>
-        </ion-col>
-      </ion-row>
-
-      <ion-row>
-        <ion-col>
-          <ion-list>
-            <ng-container *ngFor="let p of results; index as i">
-              <ion-item *ngIf="p.custom_fields.Fournisseur">
-                <ion-label>
-                  <p>{{ p.custom_fields.Fournisseur }}</p>
-                  <h2>{{ p.name }}</h2>
-                  <p>{{ p.stock }} articles</p>
-                </ion-label>
-
-                <ion-buttons slot="end">
-                  <ion-button fill="solid" (click)="goToDetail(p)">
-                    Détails
-                  </ion-button>
-                  <ion-button fill="solid" (click)="presentModalQty(p, i)">
-                    Stock
-                  </ion-button>
-                </ion-buttons>
-              </ion-item>
-            </ng-container>
-          </ion-list>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  `,
 })
 export class ResultsComponent implements OnInit {
   /** Les résultats de la recherche de produits */

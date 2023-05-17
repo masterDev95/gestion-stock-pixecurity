@@ -10,7 +10,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "deploy": "ionic build --prod && firebase deploy"
+    "deploy-test": "ionic build && firebase use test-stock-c5184 && firebase deploy",
+    "deploy-prod": "ionic build && firebase use stock-pix-a0923 && firebase deploy"
   },
   "private": true,
   "dependencies": {

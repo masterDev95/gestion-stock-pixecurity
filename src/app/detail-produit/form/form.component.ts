@@ -154,33 +154,45 @@ export class FormComponent implements OnInit, OnChanges {
 
     console.log(product);
 
+    // Vérifier si une catégorie est choisie
     const chosenCategorie = this.productForm.controls.categorie.value as string;
-
     if (chosenCategorie !== '') {
+      // Récupérer la catégorie correspondante
       const categorie = this.collectionCategories[chosenCategorie];
+
+      // Vérifier si le produit est déjà dans la liste des produits de la catégorie
       const found = categorie.listeIdProduits.find(
         (id) => id === this.selectedProduct.id
       );
-      if (!found) categorie.listeIdProduits.push(this.selectedProduct.id);
+
+      // Ajouter le produit à la liste des produits de la catégorie si non trouvé
+      if (!found) {
+        categorie.listeIdProduits.push(this.selectedProduct.id);
+      }
+
+      // Mettre à jour la catégorie dans le service Categorie
       this.categorieService.updateCategorie(chosenCategorie, categorie);
     }
 
-    this.axonautService
-      .updateProduct(this.selectedProduct.id, product)
-      .then(() => {
-        loading.dismiss();
-        console.log('Mis à jour !');
-        this.presentToastUpdate('Produit mis à jour!');
-        product.id = this.selectedProduct.id;
-        this.axonautService.productToUpdate.next(product);
-        this.navController.back();
-      })
-      .catch((err) => {
-        loading.dismiss();
-        console.error(err);
-        this.presentToastUpdate(
-          'Une erreur est survenue lors de la mise à jour du produit.'
-        );
-      });
+    // Effectuer la mise à jour du produit via le service Axonaut
+    try {
+      await this.axonautService.updateProduct(this.selectedProduct.id, product);
+      loading.dismiss();
+      console.log('Mis à jour !');
+      this.presentToastUpdate('Produit mis à jour!');
+
+      // Mettre à jour les informations du produit dans le sujet productToUpdate
+      product.id = this.selectedProduct.id;
+      this.axonautService.productToUpdate.next(product);
+
+      // Revenir en arrière dans la navigation
+      this.navController.back();
+    } catch (err) {
+      loading.dismiss();
+      console.error(err);
+      this.presentToastUpdate(
+        'Une erreur est survenue lors de la mise à jour du produit.'
+      );
+    }
   }
 }

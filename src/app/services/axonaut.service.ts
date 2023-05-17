@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpsCallableResult, httpsCallableFromURL } from 'firebase/functions';
 import { Subject } from 'rxjs';
 import { functions } from '../app.component';
+import { environment } from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,7 @@ export class AxonautService {
   getProductsById(id: number) {
     return httpsCallableFromURL(
       functions,
-      `https://getproductbyid-7yl55atwgq-uc.a.run.app?id=${id}`
+      `https://getproductbyid-${environment.functionsID}-uc.a.run.app?id=${id}`
     )();
   }
 
@@ -32,7 +33,7 @@ export class AxonautService {
   getProductsByCode(code: string) {
     return httpsCallableFromURL(
       functions,
-      `https://getproductbycode-7yl55atwgq-uc.a.run.app?code=${code}`
+      `https://getproductbycode-${environment.functionsID}-uc.a.run.app?code=${code}`
     )();
   }
 
@@ -44,7 +45,7 @@ export class AxonautService {
   getProductsByName(name: string) {
     return httpsCallableFromURL(
       functions,
-      `https://getproductbyname-7yl55atwgq-uc.a.run.app?name=${name}`
+      `https://getproductbyname-${environment.functionsID}-uc.a.run.app?name=${name}`
     )();
   }
 
@@ -57,7 +58,7 @@ export class AxonautService {
   updateStock(pID: string, n: number) {
     return httpsCallableFromURL(
       functions,
-      `https://updatestock-7yl55atwgq-uc.a.run.app?pID=${pID}&n=${n}`
+      `https://updatestock-${environment.functionsID}-uc.a.run.app?pID=${pID}&n=${n}`
     )();
   }
 
@@ -70,7 +71,7 @@ export class AxonautService {
   updateProduct(pID: string, productOptions: any) {
     return httpsCallableFromURL(
       functions,
-      `https://updateproduct-7yl55atwgq-uc.a.run.app?pID=${pID}&po=${JSON.stringify(
+      `https://updateproduct-${environment.functionsID}-uc.a.run.app?pID=${pID}&po=${JSON.stringify(
         productOptions
       )}`
     )();
@@ -85,7 +86,7 @@ export class AxonautService {
     const subject = new Subject<Promise<HttpsCallableResult>>();
     httpsCallableFromURL(
       functions,
-      `https://createproduct-7yl55atwgq-uc.a.run.app?po=${JSON.stringify(
+      `https://createproduct-${environment.functionsID}-uc.a.run.app?po=${JSON.stringify(
         productOptions
       )}`
     )().then((res) =>

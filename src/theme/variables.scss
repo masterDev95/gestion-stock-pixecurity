@@ -237,15 +237,20 @@
 }
 
 /** Theming **/
+ion-content {
+  --color: white;
+
+  ion-segment-button {
+    --color: white;
+    --color-checked: var(--ion-color-tertiary-tint);
+  }
+}
+
 @media (min-width: 576px) {
   :not(ion-menu) {
     > ion-content {
       --background: url(../assets/bg/px-bg-2.png) center center/cover no-repeat;
       --color: white;
-
-      ion-segment-button {
-        --color: white;
-      }
     }
   }
   ion-toolbar {
