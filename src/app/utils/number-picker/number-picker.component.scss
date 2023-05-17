@@ -12,7 +12,7 @@ ion-row {
     display: flex;
     justify-content: center;
 
-    div {
+    ion-label {
       background: #cecece85;
       width: 55px;
       height: 50px;
@@ -23,5 +23,13 @@ ion-row {
       justify-content: center;
       align-items: center;
     }
+  }
+}
+
+ion-content {
+  --background: none !important;
+
+  > ion-grid {
+    background: none !important;
   }
 }

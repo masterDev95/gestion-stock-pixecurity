@@ -6,8 +6,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-grid fixed>
+<ion-content style="--background: none !important">
+  <ion-grid style="background: none" fixed>
     <ion-row>
       <ion-col>
         <ion-item>
@@ -20,10 +20,15 @@
       </ion-col>
     </ion-row>
 
-    <ion-row class="ion-text-center">
-      <ion-col>
-        <ion-button fill="clear" size="large" *ngFor="let i of searchList" (click)="save(i)">
-          <ion-icon slot="icon-only" [name]="i"></ion-icon>
+    <ion-row class="ion-justify-content-center ion-text-center">
+      <ion-col size="3" *ngFor="let i of searchList">
+        <ion-button
+          style="opacity: 0.65"
+          size="large"
+          fill="clear"
+          (click)="save(i)"
+        >
+          <ion-icon color="dark" slot="icon-only" [name]="i"></ion-icon>
         </ion-button>
       </ion-col>
     </ion-row>
