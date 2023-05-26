@@ -9,7 +9,7 @@
     <ion-col>
       <ion-list>
         <ng-container *ngFor="let p of results; index as i">
-          <ion-item *ngIf="p.custom_fields.Fournisseur">
+          <ion-item>
             <ion-label>
               <p>{{ p.custom_fields.Fournisseur }}</p>
               <h2>{{ p.name }}</h2>

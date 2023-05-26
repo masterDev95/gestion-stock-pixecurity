@@ -30,7 +30,7 @@ export class FormComponent implements OnInit {
   @Output() results = new EventEmitter<Object>();
 
   /** Segment actuellement sélectionné pour la recherche. Peut être `code` ou `name`. */
-  currentSegment: 'code' | 'name' = 'code';
+  currentSegment: 'code' | 'name' = 'name';
   /** Champ de recherche contrôlé par Reactive Forms. */
   searchField = new FormControl('', Validators.required);
   /** Booléen qui indique si l'icône de recherche est visible en fonction de la taille de l'écran. */
@@ -82,9 +82,23 @@ export class FormComponent implements OnInit {
         : this.axonautService.getProductsByName(searchTerm);
 
     promise.then((res) => {
+      // Exclut les produits sans attribut `Fournisseur`
+      const filteredResults = (res.data as any[]).filter(
+        (p) =>
+          p.custom_fields.Fournisseur !== undefined &&
+          p.custom_fields.Fournisseur.trim() !== ''
+      );
+
+      // Vérifie si le tableau filtré est vide
+      if (filteredResults.length < 1) {
+        loading.dismiss();
+        this.notFoundAlert();
+        return;
+      }
+
       // Émet les résultats via l'événement `results`.
-      this.results.emit(res.data as {});
-      console.log(res.data);
+      this.results.emit(filteredResults as {});
+      console.log(filteredResults);
       console.info('Trouvé!');
       loading.dismiss();
     }).catch((e) => {
