@@ -8,8 +8,10 @@ import {
   ToastController,
 } from '@ionic/angular';
 import { Categorie } from 'src/app/models/categorie';
+import { Product } from 'src/app/models/product';
 import { AxonautService } from 'src/app/services/axonaut.service';
 import { CategorieService } from 'src/app/services/categorie.service';
+import { ProduitsService } from 'src/app/services/produits.service';
 
 @Component({
   selector: 'ajout-produit-form',
@@ -52,7 +54,8 @@ export class FormComponent implements OnInit {
     private categorieService: CategorieService,
     private loadingController: LoadingController,
     private toastController: ToastController,
-    private navController: NavController
+    private navController: NavController,
+    private produitService: ProduitsService,
   ) {}
 
   ngOnInit() {
@@ -100,11 +103,28 @@ export class FormComponent implements OnInit {
           if (chosenCategorie !== '') {
             // Mettre à jour la catégorie si une catégorie est choisie
             const categorie = this.collectionCategories[chosenCategorie];
+            const createdProduct = (res.data as any)
             const found = categorie.listeIdProduits.find(
-              (id) => id === (res.data as any).id
+              (id) => id === createdProduct.id
             );
-            if (!found) categorie.listeIdProduits.push((res.data as any).id);
+            if (!found) categorie.listeIdProduits.push(createdProduct.id);
             this.categorieService.updateCategorie(chosenCategorie, categorie);
+
+            // Créer le produit sur Firestore
+            const produit = new Product({
+              id: createdProduct.id,
+              name: createdProduct.name,
+              customFields: createdProduct.custom_fields,
+              description: createdProduct.description,
+              price: createdProduct.price,
+              priceWithTax: createdProduct.price_with_tax,
+              productCode: createdProduct.product_code,
+              stock: createdProduct.stock,
+              taxRate: createdProduct.tax_rate,
+              type: createdProduct.type,
+            });
+
+            this.produitService.updateProduit(produit);
           }
 
           // Naviguer vers la page de détail du produit créé

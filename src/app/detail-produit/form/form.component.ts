@@ -14,8 +14,10 @@ import {
   ToastController,
 } from '@ionic/angular';
 import { Categorie } from 'src/app/models/categorie';
+import { Product } from 'src/app/models/product';
 import { AxonautService } from 'src/app/services/axonaut.service';
 import { CategorieService } from 'src/app/services/categorie.service';
+import { ProduitsService } from 'src/app/services/produits.service';
 
 @Component({
   selector: 'detail-produit-form',
@@ -64,7 +66,8 @@ export class FormComponent implements OnInit, OnChanges {
     private categorieService: CategorieService,
     private loadingController: LoadingController,
     private toastController: ToastController,
-    private navController: NavController
+    private navController: NavController,
+    private produitService: ProduitsService,
   ) {}
 
   /**
@@ -172,6 +175,22 @@ export class FormComponent implements OnInit, OnChanges {
 
       // Mettre à jour la catégorie dans le service Categorie
       this.categorieService.updateCategorie(chosenCategorie, categorie);
+
+      // Mettre à jour le produit sur Firestore
+      const produit = new Product({
+        id: this.selectedProduct.id,
+        name: this.selectedProduct.name,
+        customFields: this.selectedProduct.custom_fields,
+        description: this.selectedProduct.description,
+        price: this.selectedProduct.price,
+        priceWithTax: this.selectedProduct.price_with_tax,
+        productCode: this.selectedProduct.product_code,
+        stock: this.selectedProduct.stock,
+        taxRate: this.selectedProduct.tax_rate,
+        type: this.selectedProduct.type,
+      });
+
+      this.produitService.updateProduit(produit);
     }
 
     // Effectuer la mise à jour du produit via le service Axonaut
