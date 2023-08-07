@@ -8,6 +8,7 @@ import {
   NavController,
   ToastController,
 } from '@ionic/angular';
+import { Product } from 'src/app/models/product';
 import { AxonautService } from 'src/app/services/axonaut.service';
 import { NumberPickerComponent } from 'src/app/utils/number-picker/number-picker.component';
 
@@ -137,10 +138,22 @@ export class ResultsComponent implements OnInit {
    * @param product Le produit sélectionné.
    */
   goToDetail(product: any) {
+    const productConverti = new Product({
+      customFields: product.custom_fields,
+      description: product.description,
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      priceWithTax: product.price_with_tax,
+      productCode: product.product_code,
+      stock: product.stock,
+      taxRate: product.tax_rate,
+      type: product.type,
+    });
     // Prépare les paramètres de la navigation avec les détails du produit sélectionné
     const navExtras: NavigationExtras = {
       queryParams: {
-        product: JSON.stringify(product),
+        product: JSON.stringify(productConverti),
       },
     };
     // Navigue vers la page de détails du produit en utilisant la NavController

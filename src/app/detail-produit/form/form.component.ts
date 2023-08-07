@@ -106,16 +106,16 @@ export class FormComponent implements OnInit, OnChanges {
       this.productForm.patchValue({
         name: this.selectedProduct.name,
         type: type,
-        productCode: this.selectedProduct.product_code,
+        productCode: this.selectedProduct.productCode,
         customFields: {
-          fournisseur: this.selectedProduct.custom_fields.Fournisseur,
-          marque: this.selectedProduct.custom_fields.Marque,
+          fournisseur: this.selectedProduct.customFields.Fournisseur,
+          marque: this.selectedProduct.customFields.Marque,
         },
         description: this.selectedProduct.description,
         priceFields: {
           price: this.selectedProduct.price,
-          priceWithTax: this.selectedProduct.price_with_tax,
-          taxRate: this.selectedProduct.tax_rate,
+          priceWithTax: this.selectedProduct.priceWithTax,
+          taxRate: this.selectedProduct.taxRate,
         },
         qty: this.selectedProduct.stock,
       });
@@ -180,13 +180,13 @@ export class FormComponent implements OnInit, OnChanges {
       const produit = new Product({
         id: this.selectedProduct.id,
         name: this.selectedProduct.name,
-        customFields: this.selectedProduct.custom_fields,
+        customFields: this.selectedProduct.customFields,
         description: this.selectedProduct.description,
         price: this.selectedProduct.price,
-        priceWithTax: this.selectedProduct.price_with_tax,
-        productCode: this.selectedProduct.product_code,
+        priceWithTax: this.selectedProduct.priceWithTax,
+        productCode: this.selectedProduct.productCode,
         stock: this.selectedProduct.stock,
-        taxRate: this.selectedProduct.tax_rate,
+        taxRate: this.selectedProduct.taxRate,
         type: this.selectedProduct.type,
       });
 

@@ -108,8 +108,8 @@ export class ListeComponent implements OnInit, OnDestroy {
    */
   openCategorie(categorieId: string, categorie: Categorie) {
     this.navController.navigateForward(
-      ['tabs', 'categories', 'detail-categorie'],
-      { state: { id: categorieId, categorie } }
+      ['tabs', 'categories', 'liste-produits'],
+      { state: { categorie } }
     );
   }
 }

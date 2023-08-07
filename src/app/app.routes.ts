@@ -29,13 +29,23 @@ export const routes: Routes = [
           },
           {
             path: 'detail-categorie',
-            loadComponent: () => import('./detail-categorie/detail-categorie.page').then( m => m.DetailCategoriePage)
+            loadComponent: () =>
+              import('./detail-categorie/detail-categorie.page').then(
+                (m) => m.DetailCategoriePage
+              ),
           },
           {
             path: 'detail-produit',
             loadComponent: () =>
               import('./detail-produit/detail-produit.page').then(
                 (m) => m.DetailProduitPage
+              ),
+          },
+          {
+            path: 'liste-produits',
+            loadComponent: () =>
+              import('./liste-produits/liste-produits.page').then(
+                (m) => m.ListeProduitsPage
               ),
           },
         ],
