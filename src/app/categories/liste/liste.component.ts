@@ -1,7 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy, ViewChildren, QueryList, ElementRef, HostListener } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChildren,
+  QueryList,
+  ElementRef,
+  HostListener,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { IonicModule, NavController } from '@ionic/angular';
+import { AlertController, IonicModule, NavController, ToastController } from '@ionic/angular';
 import { Unsubscribe } from 'firebase/firestore';
 import { Categorie } from 'src/app/models/categorie';
 import { CategorieService } from 'src/app/services/categorie.service';
@@ -37,12 +45,47 @@ export class ListeComponent implements OnInit, OnDestroy {
   constructor(
     private categorieService: CategorieService,
     private navController: NavController,
+    private alertController: AlertController,
+    private toastController: ToastController,
   ) {}
 
   ngOnInit() {
     this.menu = document.getElementById('custom-menu')!;
 
     this.initCategoriesListening();
+  }
+
+  async alerteSuppression(categorieId: string, categorieName: string) {
+    const alert = await this.alertController.create({
+      header: 'Attention',
+      subHeader: 'La suppression sera immédiate et irrécupérable.',
+      message: `Voulez-vous vraiment supprimer la catégorie ${categorieName}?`,
+      buttons: [
+        {
+          text: 'Annuler',
+          role: 'cancel',
+        },
+        {
+          text: 'Supprimer',
+          role: 'confirm',
+          handler: () => this.deleteCategorie(categorieId),
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  /**
+   * Fonction pour afficher un message éphémère.
+   * @param message Le message à afficher.
+   */
+  async presentToastUpdate(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+    });
+    toast.present();
   }
 
   @HostListener('window:click')
@@ -80,6 +123,12 @@ export class ListeComponent implements OnInit, OnDestroy {
         action: () => this.editCategorie(categorieId, categorie),
         icon: 'create-outline',
         iconColor: 'warning',
+      },
+      {
+        name: `Supprimer ${categorie.name}`,
+        action: () => this.alerteSuppression(categorieId, categorie.name),
+        icon: 'trash-outline',
+        iconColor: 'danger',
       },
     ];
   }
@@ -122,5 +171,16 @@ export class ListeComponent implements OnInit, OnDestroy {
       ['tabs', 'categories', 'detail-categorie'],
       { state: { id: categorieId, categorie } }
     );
+  }
+
+  deleteCategorie(categorieId: string) {
+    this.categorieService
+      .deleteCategorie(categorieId)
+      .then(() => this.presentToastUpdate('La catégorie à bien été supprimée!'))
+      .catch(() =>
+        this.presentToastUpdate(
+          'Une erreur est survenue pendant la suppression.'
+        )
+      );
   }
 }
