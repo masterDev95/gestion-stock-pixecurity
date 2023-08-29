@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonicModule } from '@ionic/angular';
+import { IonContent, IonicModule, ScrollDetail } from '@ionic/angular';
 import { FormComponent } from './form/form.component';
 import { ResultsComponent } from './results/results.component';
 
@@ -22,7 +22,8 @@ export class SearchPage implements OnInit {
   @ViewChild(IonContent) content!: IonContent;
 
   transmissionData!: Object;
-  view: 'form' | 'results' = 'form';
+  showResults = false;
+  showSearchBar = true;
 
   constructor() {}
 
@@ -30,10 +31,15 @@ export class SearchPage implements OnInit {
 
   receiveResults(results: Object) {
     this.transmissionData = results;
-    this.view = 'results';
+    this.showResults = true;
+    this.showSearchBar = false
   }
 
   scrollToTop() {
     this.content.scrollToTop(400);
+  }
+
+  openSearchBar() {
+    this.showSearchBar = true;
   }
 }

@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>Rechercher</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="view = 'form'">
+      <ion-button (click)="this.showSearchBar = true">
         <ion-icon slot="icon-only" name="search"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -13,28 +13,24 @@
 </ion-header>
 
 <ion-content>
-  <!-- RÉSULTATS -->
-  <search-results
-    *ngIf="view === 'results'"
-    [results]="transmissionData"
-  ></search-results>
   <!-- FORMULAIRE -->
   <search-form
-    *ngIf="view === 'form'"
     (results)="receiveResults($event)"
+    (shutter)="showSearchBar = !showSearchBar"
+    [class.show]="showSearchBar"
   ></search-form>
+  <!-- RÉSULTATS -->
+  <search-results
+    *ngIf="showResults"
+    [results]="transmissionData"
+  ></search-results>
 
-  <ion-fab
-    *ngIf="view === 'results'"
-    vertical="bottom"
-    horizontal="end"
-    slot="fixed"
-  >
+  <ion-fab *ngIf="showResults" vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button>
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button (click)="view = 'form'"
+      <ion-fab-button (click)="this.showSearchBar = true"
         ><ion-icon name="search"></ion-icon
       ></ion-fab-button>
       <ion-fab-button (click)="scrollToTop()"

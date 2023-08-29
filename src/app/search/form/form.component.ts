@@ -29,6 +29,8 @@ export class FormComponent implements OnInit {
    */
   @Output() results = new EventEmitter<Object>();
 
+  @Output() shutter = new EventEmitter();
+
   /** Segment actuellement sélectionné pour la recherche. Peut être `code` ou `name`. */
   currentSegment: 'code' | 'name' = 'name';
   /** Champ de recherche contrôlé par Reactive Forms. */
@@ -106,6 +108,10 @@ export class FormComponent implements OnInit {
       loading.dismiss();
       this.notFoundAlert();
     });
+  }
+
+  toggleShutter() {
+    this.shutter.emit();
   }
 
   /**
