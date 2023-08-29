@@ -25,14 +25,20 @@ export class ListeProduitsPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    // Si la catégorie n'est pas présente dans l'historique, retourne en arrière.
+    // Sinon, charge les détails de la catégorie et les produits associés.
     if (!history.state.categorie) {
       this.navController.back();
       return;
     }
 
+    // Récupère le nom de la catégorie depuis l'historique
     this.nomCategorie = history.state.categorie.name;
 
+    // Récupère la liste des ID de produits depuis l'historique
     this.listeIdProduits = history.state.categorie;
+
+    // Parcourt les ID de produits et récupère les détails de chaque produit
     for (const id of this.listeIdProduits.listeIdProduits) {
       this.produitsService
         .getProduitById(id.toString())

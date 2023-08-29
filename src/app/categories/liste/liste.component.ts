@@ -22,6 +22,7 @@ import { CategorieService } from 'src/app/services/categorie.service';
   templateUrl: 'liste.component.html',
 })
 export class ListeComponent implements OnInit, OnDestroy {
+  /** Représente une liste de références d'éléments HTML de type ion-card. */
   @ViewChildren('targetElement') cardElements!: QueryList<
     ElementRef<HTMLElement>
   >;
@@ -46,7 +47,7 @@ export class ListeComponent implements OnInit, OnDestroy {
     private categorieService: CategorieService,
     private navController: NavController,
     private alertController: AlertController,
-    private toastController: ToastController,
+    private toastController: ToastController
   ) {}
 
   ngOnInit() {
@@ -55,6 +56,11 @@ export class ListeComponent implements OnInit, OnDestroy {
     this.initCategoriesListening();
   }
 
+  /**
+   * Affiche une alerte de confirmation pour la suppression d'une catégorie.
+   * @param categorieId L'identifiant de la catégorie à supprimer.
+   * @param categorieName Le nom de la catégorie à supprimer.
+   */
   async alerteSuppression(categorieId: string, categorieName: string) {
     const alert = await this.alertController.create({
       header: 'Attention',
@@ -88,6 +94,11 @@ export class ListeComponent implements OnInit, OnDestroy {
     toast.present();
   }
 
+  /**
+   * Fonction qui gère la fermeture du menu contextuel en réponse à certains événements.
+   * Si le menu est affiché, il est masqué lorsque l'utilisateur effectue un clic normal,
+   * un clic auxiliaire (clic avec le bouton droit) ou que la fenêtre perd le focus.
+   */
   @HostListener('window:click')
   @HostListener('window:auxclick')
   @HostListener('window:blur')
@@ -97,6 +108,12 @@ export class ListeComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Ouvre le menu contextuel pour une catégorie spécifique en réponse à un clic droit.
+   * @param event L'événement de clic droit.
+   * @param categorieId L'ID de la catégorie à laquelle le menu contextuel est associé.
+   * @param categorie Les détails de la catégorie.
+   */
   openCategorieContextMenu(
     event: MouseEvent,
     categorieId: string,
@@ -104,14 +121,24 @@ export class ListeComponent implements OnInit, OnDestroy {
   ) {
     event.preventDefault();
 
+    // Actualise le contenu du menu contextuel en fonction de la catégorie
     this.refreshContextMenu(categorieId, categorie);
 
+    // Positionne le menu contextuel à l'endroit où le clic droit a été effectué
     this.menu.style.left = event.pageX - 12 + 'px';
     this.menu.style.top = event.pageY - 56 + 'px';
+
+    // Affiche le menu contextuel
     this.menu.classList.add('show');
   }
 
+  /**
+   * Actualise le contenu du menu contextuel en fonction de la catégorie sélectionnée.
+   * @param categorieId L'ID de la catégorie.
+   * @param categorie Les détails de la catégorie.
+   */
   refreshContextMenu(categorieId: string, categorie: Categorie) {
+    // Crée une liste de fonctions pour le menu contextuel en fonction de la catégorie
     this.listeFonctionsContextMenu = [
       {
         name: `Voir les produits`,
@@ -173,6 +200,11 @@ export class ListeComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * Supprime une catégorie en utilisant le service de catégorie.
+   * Affiche un message toast en cas de succès ou d'erreur.
+   * @param categorieId L'ID de la catégorie à supprimer.
+   */
   deleteCategorie(categorieId: string) {
     this.categorieService
       .deleteCategorie(categorieId)

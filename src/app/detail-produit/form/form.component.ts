@@ -67,26 +67,8 @@ export class FormComponent implements OnInit, OnChanges {
     private loadingController: LoadingController,
     private toastController: ToastController,
     private navController: NavController,
-    private produitService: ProduitsService,
+    private produitService: ProduitsService
   ) {}
-
-  /**
-   * Fonction pour obtenir le type de produit correspondant au type de produit donné en paramètre.
-   * @param productType Le type de produit sous forme de chaîne de caractères.
-   * @returns Le type de produit correspondant sous forme de nombre.
-   */
-  getTypeFromProductType(productType: string): number {
-    switch (productType) {
-      case 'Service':
-        return 706;
-      case 'Matière première':
-        return 601;
-      case 'Produit fini':
-        return 701;
-      default:
-        return 707;
-    }
-  }
 
   ngOnInit() {
     this.categorieService
@@ -126,6 +108,24 @@ export class FormComponent implements OnInit, OnChanges {
           if (!categorie) return;
           this.productForm.controls.categorie.setValue(categorie);
         });
+    }
+  }
+
+  /**
+   * Fonction pour obtenir le type de produit correspondant au type de produit donné en paramètre.
+   * @param productType Le type de produit sous forme de chaîne de caractères.
+   * @returns Le type de produit correspondant sous forme de nombre.
+   */
+  getTypeFromProductType(productType: string): number {
+    switch (productType) {
+      case 'Service':
+        return 706;
+      case 'Matière première':
+        return 601;
+      case 'Produit fini':
+        return 701;
+      default:
+        return 707;
     }
   }
 
