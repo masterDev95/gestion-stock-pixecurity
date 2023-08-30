@@ -14,8 +14,10 @@ import {
   ToastController,
 } from '@ionic/angular';
 import { Categorie } from 'src/app/models/categorie';
+import { Product } from 'src/app/models/product';
 import { AxonautService } from 'src/app/services/axonaut.service';
 import { CategorieService } from 'src/app/services/categorie.service';
+import { ProduitsService } from 'src/app/services/produits.service';
 
 @Component({
   selector: 'detail-produit-form',
@@ -64,26 +66,9 @@ export class FormComponent implements OnInit, OnChanges {
     private categorieService: CategorieService,
     private loadingController: LoadingController,
     private toastController: ToastController,
-    private navController: NavController
+    private navController: NavController,
+    private produitService: ProduitsService
   ) {}
-
-  /**
-   * Fonction pour obtenir le type de produit correspondant au type de produit donné en paramètre.
-   * @param productType Le type de produit sous forme de chaîne de caractères.
-   * @returns Le type de produit correspondant sous forme de nombre.
-   */
-  getTypeFromProductType(productType: string): number {
-    switch (productType) {
-      case 'Service':
-        return 706;
-      case 'Matière première':
-        return 601;
-      case 'Produit fini':
-        return 701;
-      default:
-        return 707;
-    }
-  }
 
   ngOnInit() {
     this.categorieService
@@ -103,16 +88,16 @@ export class FormComponent implements OnInit, OnChanges {
       this.productForm.patchValue({
         name: this.selectedProduct.name,
         type: type,
-        productCode: this.selectedProduct.product_code,
+        productCode: this.selectedProduct.productCode,
         customFields: {
-          fournisseur: this.selectedProduct.custom_fields.Fournisseur,
-          marque: this.selectedProduct.custom_fields.Marque,
+          fournisseur: this.selectedProduct.customFields.Fournisseur,
+          marque: this.selectedProduct.customFields.Marque,
         },
         description: this.selectedProduct.description,
         priceFields: {
           price: this.selectedProduct.price,
-          priceWithTax: this.selectedProduct.price_with_tax,
-          taxRate: this.selectedProduct.tax_rate,
+          priceWithTax: this.selectedProduct.priceWithTax,
+          taxRate: this.selectedProduct.taxRate,
         },
         qty: this.selectedProduct.stock,
       });
@@ -123,6 +108,24 @@ export class FormComponent implements OnInit, OnChanges {
           if (!categorie) return;
           this.productForm.controls.categorie.setValue(categorie);
         });
+    }
+  }
+
+  /**
+   * Fonction pour obtenir le type de produit correspondant au type de produit donné en paramètre.
+   * @param productType Le type de produit sous forme de chaîne de caractères.
+   * @returns Le type de produit correspondant sous forme de nombre.
+   */
+  getTypeFromProductType(productType: string): number {
+    switch (productType) {
+      case 'Service':
+        return 706;
+      case 'Matière première':
+        return 601;
+      case 'Produit fini':
+        return 701;
+      default:
+        return 707;
     }
   }
 
@@ -172,6 +175,22 @@ export class FormComponent implements OnInit, OnChanges {
 
       // Mettre à jour la catégorie dans le service Categorie
       this.categorieService.updateCategorie(chosenCategorie, categorie);
+
+      // Mettre à jour le produit sur Firestore
+      const produit = new Product({
+        id: this.selectedProduct.id,
+        name: this.selectedProduct.name,
+        customFields: this.selectedProduct.customFields,
+        description: this.selectedProduct.description,
+        price: this.selectedProduct.price,
+        priceWithTax: this.selectedProduct.priceWithTax,
+        productCode: this.selectedProduct.productCode,
+        stock: this.selectedProduct.stock,
+        taxRate: this.selectedProduct.taxRate,
+        type: this.selectedProduct.type,
+      });
+
+      this.produitService.updateProduit(produit);
     }
 
     // Effectuer la mise à jour du produit via le service Axonaut

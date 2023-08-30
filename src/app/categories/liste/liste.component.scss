@@ -4,3 +4,40 @@ ion-card-content {
     font-weight: bold;
   }
 }
+
+/* Stylisation du menu contextuel personnalisé */
+.custom-menu {
+  position: absolute;
+  box-shadow: 3px 2px 5px 1px rgba(0, 0, 0, 0.2);
+  transition: transform .5s, opacity .5s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 5px;
+  min-width: 220px;
+  transform-origin: top left;
+  transform: scale(0);
+  opacity: 0;
+
+  /* Lorsque la classe "show" est appliquée, afficher le menu */
+  &.show {
+    transform: scale(1);
+    opacity: 1;
+    ion-item {
+      cursor: pointer;
+    }
+  }
+
+  /* Légère réduction de luminosité au survol */
+  ion-item:hover {
+    filter: brightness(.9);
+  }
+}
+
+/* Stylisation pour le mode sombre */
+@media (prefers-color-scheme: dark) {
+  /* Lorsqu'on survole un ion-item dans le menu, augmenter la luminosité */
+  .custom-menu {
+    ion-item:hover {
+      filter: brightness(1.5) !important;
+    }
+  }
+}

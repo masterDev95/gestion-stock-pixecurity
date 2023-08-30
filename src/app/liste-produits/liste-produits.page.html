@@ -1,0 +1,40 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/categories"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ nomCategorie }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid fixed>
+    <ion-row class="ion-padding-horizontal">
+      <ion-col>
+        <h1>Produits pour {{ nomCategorie }}</h1>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-list>
+          <ng-container *ngFor="let p of listeProduits; index as i">
+            <ion-item>
+              <ion-label>
+                <p>{{ p.customFields.fournisseur }}</p>
+                <h2>{{ p.name }}</h2>
+                <p>{{ p.stock }} articles</p>
+              </ion-label>
+
+              <ion-buttons slot="end">
+                <ion-button fill="solid" (click)="goToDetail(p)">
+                  Détails
+                </ion-button>
+              </ion-buttons>
+            </ion-item>
+          </ng-container>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -29,16 +29,16 @@ export class Product {
     fournisseur: string;
   };
 
-  constructor(data: ProductInterface) {
-    this.id = data.id;
-    this.name = data.name;
-    this.productCode = data.productCode;
-    this.description = data.description;
-    this.price = data.price;
-    this.priceWithTax = data.priceWithTax;
-    this.taxRate = data.taxRate;
-    this.type = data.type;
-    this.stock = data.stock;
-    this.customFields = data.customFields;
+  constructor(data?: ProductInterface) {
+    this.id = data?.id ?? 0;
+    this.name = data?.name ?? '';
+    this.productCode = data?.productCode ?? '';
+    this.description = data?.description ?? '';
+    this.price = data?.price ?? 0;
+    this.priceWithTax = data?.priceWithTax ?? 0;
+    this.taxRate = data?.taxRate ?? 0;
+    this.type = data?.type ?? '';
+    this.stock = data?.stock ?? 0;
+    this.customFields = data?.customFields ?? { marque: '', fournisseur: '' };
   }
 }

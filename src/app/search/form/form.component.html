@@ -1,14 +1,14 @@
 <ion-grid fixed>
   <!-- SEGMENTS par code/par nom -->
   <ion-segment
-    value="code"
+    value="name"
     (ionChange)="segmentChanged($event)"
     class="ion-padding"
   >
-    <ion-segment-button value="code">
+    <ion-segment-button value="name">
       <ion-label>Par nom</ion-label>
     </ion-segment-button>
-    <ion-segment-button value="name">
+    <ion-segment-button value="code">
       <ion-label>Par code</ion-label>
     </ion-segment-button>
   </ion-segment>
@@ -52,3 +52,9 @@
     </ion-col>
   </ion-row>
 </ion-grid>
+
+<ion-fab vertical="bottom" horizontal="center" slot="fixed" edge="true">
+  <ion-fab-button (click)="shutter.emit()" class="ion-align-items-start">
+    <ion-icon name="menu"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

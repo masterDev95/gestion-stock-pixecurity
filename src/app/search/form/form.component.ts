@@ -28,6 +28,8 @@ export class FormComponent implements OnInit {
    * Les résultats sont émis sous la forme d'un objet.
    */
   @Output() results = new EventEmitter<Object>();
+  /** Événement déclenché lorsque on appuie sur le bouton de menu dépliant */
+  @Output() shutter = new EventEmitter();
 
   /** Segment actuellement sélectionné pour la recherche. Peut être `code` ou `name`. */
   currentSegment: 'code' | 'name' = 'name';

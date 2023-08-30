@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDocs,
   onSnapshot,
@@ -82,6 +83,21 @@ export class CategorieService {
         listeIdProduits: values.listeIdProduits,
         ionIcon: values.ionIcon,
       });
+      return true;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  }
+
+  /**
+   * Supprime une catégorie de la base de données.
+   * @param categorieId L'identifiant de la catégorie à supprimer.
+   * @returns Une promesse qui se résout en `true` si la suppression réussit, sinon en `false`.
+   */
+  async deleteCategorie(categorieId: string) {
+    try {
+      await deleteDoc(doc(db, 'categories', categorieId));
       return true;
     } catch (e) {
       console.error(e);
